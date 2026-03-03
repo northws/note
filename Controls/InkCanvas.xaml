@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="HandwrittenNotes.Controls.InkCanvas"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    Background="#E0E0E0">
+
+    <ScrollViewer
+        x:Name="CanvasScrollViewer"
+        ZoomMode="Enabled"
+        MinZoomFactor="0.1"
+        MaxZoomFactor="4.0"
+        HorizontalScrollMode="Enabled"
+        VerticalScrollMode="Enabled"
+        HorizontalScrollBarVisibility="Auto"
+        VerticalScrollBarVisibility="Auto"
+        PointerWheelChanged="CanvasScrollViewer_PointerWheelChanged">
+        <canvas:CanvasControl
+            x:Name="DrawCanvas"
+            Draw="DrawCanvas_Draw"
+            CreateResources="DrawCanvas_CreateResources"
+            PointerPressed="DrawCanvas_PointerPressed"
+            PointerMoved="DrawCanvas_PointerMoved"
+            PointerReleased="DrawCanvas_PointerReleased"
+            PointerExited="DrawCanvas_PointerExited"
+            PointerEntered="DrawCanvas_PointerEntered"
+            PointerCanceled="DrawCanvas_PointerCanceled" />
+    </ScrollViewer>
+</UserControl>

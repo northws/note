@@ -1,0 +1,54 @@
+<Project>
+  <!-- 
+    Override ALL MrtCore.PriGen.targets that reference AppxPackage/PRI tasks.
+    These tasks require Visual Studio's UWP/WinUI workload (AppxPackage tools)
+    which are not included in the .NET CLI SDK.
+    We make them all no-ops since we're building an unpackaged desktop app.
+  -->
+
+  <!-- Core packaging targets - make no-ops -->
+  <Target Name="GetMrtPackagingOutputs" Returns="@(PackagingOutputs)" />
+  <Target Name="GetOptionalProjectOutputs" />
+  <Target Name="AddPriPayloadFilesToCopyToOutputDirectoryItems" />
+  <Target Name="_ExpandPriFiles" />
+  <Target Name="_ExpandProjectPriFile" />
+  <Target Name="_GenerateProjectPriFile" />
+  <Target Name="_GeneratePrisForPortableLibraries" />
+  <Target Name="_GenerateProjectPriConfigurationFiles" />
+  <Target Name="_GenerateProjectPriFileCore" />
+  <Target Name="_GetSdkToolPaths" />
+  <Target Name="_GetSdkToolsPathsFromPackage" />
+  <Target Name="_GetSdkToolsPathsFromSdk" />
+  <Target Name="_GetPriFilesFromPayload" />
+  <Target Name="_ComputeInputPriFiles" />
+  <Target Name="_CalculateInputsForGenerateProjectPriFileCore" />
+  <Target Name="_AddFileReadsAndFileWritesForProjectPri" />
+  <Target Name="_CreateProjectPriFileItem" />
+  <Target Name="_SetPortablePriProperties" />
+  <Target Name="_GetRecursiveProjectArchitecture" />
+  <Target Name="_GetPackageArchitecture" />
+  <Target Name="_GetDefaultResourceLanguage" />
+  <Target Name="_ValidateConfiguration" />
+  <Target Name="_MrtCoreUpToDateCheckInput" />
+  <Target Name="_MrtCoreUpToDateCheckBuilt" />
+  <Target Name="BeforeGenerateProjectPriFile" />
+  <Target Name="AfterGenerateProjectPriFile" />
+  <Target Name="_CalculateXbfSupport" />
+  <Target Name="_GetProjectArchitecture" />
+  <Target Name="_GetPackageFileExtensions" />
+  <Target Name="_DeleteAppxOutputFolderIfNecessary" />
+  <Target Name="ComFilesOutputGroup" />
+  <Target Name="OptionalProjectsOutputGroup" />
+  <Target Name="GetCopyToOutputDirectoryItemsOutputGroup" />
+
+  <!-- Simplified CopyLocalFilesOutputGroup without RemovePayloadDuplicates -->
+  <Target Name="CopyLocalFilesOutputGroup"
+          Returns="@(CopyLocalFilesOutputGroupOutput)">
+    <ItemGroup>
+      <CopyLocalFilesOutputGroupOutput Include="@(ReferenceCopyLocalPaths)"
+         Condition="'%(ReferenceCopyLocalPaths.Extension)' != '.xml'">
+        <TargetPath>%(ReferenceCopyLocalPaths.DestinationSubDirectory)%(ReferenceCopyLocalPaths.Filename)%(ReferenceCopyLocalPaths.Extension)</TargetPath>
+      </CopyLocalFilesOutputGroupOutput>
+    </ItemGroup>
+  </Target>
+</Project>

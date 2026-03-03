@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="HandwrittenNotes.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:HandwrittenNotes.Controls"
+    Title="手写笔记">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <!-- 侧边栏 -->
+            <ColumnDefinition Width="260" />
+            <!-- 分隔符 -->
+            <ColumnDefinition Width="1" />
+            <!-- 主内容区 -->
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- ============ 侧边栏 ============ -->
+        <Grid Grid.Column="0" Background="{StaticResource SidebarBackgroundBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- 应用标题 -->
+            <StackPanel Grid.Row="0" Padding="16,20,16,12">
+                <TextBlock
+                    Text="📝 手写笔记"
+                    FontSize="22"
+                    FontWeight="Bold"
+                    Foreground="{StaticResource SidebarForegroundBrush}" />
+                <TextBlock
+                    Text="Windows Ink 笔记应用"
+                    FontSize="12"
+                    Foreground="{StaticResource SidebarForegroundBrush}"
+                    Opacity="0.6"
+                    Margin="0,4,0,0" />
+            </StackPanel>
+
+            <!-- 新建按钮 -->
+            <Button
+                Grid.Row="1"
+                x:Name="NewNotebookButton"
+                Click="NewNotebookButton_Click"
+                HorizontalAlignment="Stretch"
+                Margin="12,0,12,12"
+                Padding="12,10"
+                CornerRadius="8"
+                Background="{StaticResource AppAccentBrush}">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon Glyph="&#xE710;" FontSize="14" Foreground="White" />
+                    <TextBlock Text="新建笔记" Foreground="White" FontWeight="SemiBold" />
+                </StackPanel>
+            </Button>
+
+            <!-- 笔记本列表 -->
+            <ListView
+                Grid.Row="2"
+                x:Name="NotebookListView"
+                SelectionChanged="NotebookListView_SelectionChanged"
+                Padding="8,0">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <Grid Padding="8,12" ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock
+                                    Text="{Binding Name}"
+                                    FontSize="14"
+                                    Foreground="{StaticResource SidebarForegroundBrush}"
+                                    TextTrimming="CharacterEllipsis" />
+                                <TextBlock
+                                    Text="{Binding ModifiedAt}"
+                                    FontSize="11"
+                                    Foreground="{StaticResource SidebarForegroundBrush}"
+                                    Opacity="0.5"
+                                    Margin="0,2,0,0" />
+                            </StackPanel>
+                            <Button
+                                Grid.Column="1"
+                                Tag="{Binding Id}"
+                                Click="DeleteNotebook_Click"
+                                ToolTipService.ToolTip="删除"
+                                Width="30" Height="30"
+                                Padding="0"
+                                Background="Transparent"
+                                VerticalAlignment="Center">
+                                <FontIcon Glyph="&#xE74D;" FontSize="12" Foreground="#F38BA8" />
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+
+        <!-- 分隔线 -->
+        <Border Grid.Column="1" Background="#313244" />
+
+        <!-- ============ 主内容区 ============ -->
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <!-- 工具栏 -->
+                <RowDefinition Height="Auto" />
+                <!-- 画布 -->
+                <RowDefinition Height="*" />
+                <!-- 底部页面导航 -->
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- 工具栏 -->
+<controls:InkToolbar
+                Grid.Row="0"
+                x:Name="ToolBar"
+                ToolChanged="ToolBar_ToolChanged"
+                ColorChanged="ToolBar_ColorChanged"
+                StrokeWidthChanged="ToolBar_StrokeWidthChanged"
+                UndoRequested="ToolBar_UndoRequested"
+                RedoRequested="ToolBar_RedoRequested"
+                ClearRequested="ToolBar_ClearRequested"
+                ExportPdfRequested="ToolBar_ExportPdfRequested"
+                ImportPdfRequested="ToolBar_ImportPdfRequested"
+                ZoomInRequested="ToolBar_ZoomInRequested"
+                ZoomOutRequested="ToolBar_ZoomOutRequested"
+                ZoomResetRequested="ToolBar_ZoomResetRequested" />
+
+            <!-- 画布 -->
+            <controls:InkCanvas
+                Grid.Row="1"
+                x:Name="DrawingCanvas"
+                StrokesChanged="DrawingCanvas_StrokesChanged" />
+
+            <!-- 欢迎页（无笔记本时显示） -->
+            <Grid
+                Grid.Row="1"
+                x:Name="WelcomePanel"
+                Visibility="Visible"
+                Background="{StaticResource CanvasBackgroundBrush}">
+                <StackPanel
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Spacing="12">
+                    <FontIcon
+                        Glyph="&#xEE56;"
+                        FontSize="64"
+                        Foreground="{StaticResource AppAccentBrush}"
+                        HorizontalAlignment="Center" />
+                    <TextBlock
+                        Text="欢迎使用手写笔记"
+                        FontSize="28"
+                        FontWeight="Bold"
+                        HorizontalAlignment="Center"
+                        Foreground="#1E1E2E" />
+                    <TextBlock
+                        Text="点击左侧「新建笔记」开始创作"
+                        FontSize="16"
+                        HorizontalAlignment="Center"
+                        Foreground="#6C7086" />
+                </StackPanel>
+            </Grid>
+
+            <!-- 页面导航栏 -->
+            <Grid
+                Grid.Row="2"
+                x:Name="PageNavBar"
+                Background="{StaticResource ToolbarBackgroundBrush}"
+                Padding="12,6"
+                Visibility="Collapsed">
+                <StackPanel
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Spacing="12">
+                    <Button
+                        x:Name="PrevPageButton"
+                        Click="PrevPageButton_Click"
+                        ToolTipService.ToolTip="上一页"
+                        Width="36" Height="36"
+                        Padding="0">
+                        <FontIcon Glyph="&#xE76B;" FontSize="14" />
+                    </Button>
+                    <TextBlock
+                        x:Name="PageInfoText"
+                        Text="第 1 / 1 页"
+                        VerticalAlignment="Center"
+                        Foreground="{StaticResource SidebarForegroundBrush}"
+                        FontSize="13" />
+                    <Button
+                        x:Name="NextPageButton"
+                        Click="NextPageButton_Click"
+                        ToolTipService.ToolTip="下一页"
+                        Width="36" Height="36"
+                        Padding="0">
+                        <FontIcon Glyph="&#xE76C;" FontSize="14" />
+                    </Button>
+                    <Button
+                        x:Name="AddPageButton"
+                        Click="AddPageButton_Click"
+                        ToolTipService.ToolTip="添加页面"
+                        Width="36" Height="36"
+                        Padding="0">
+                        <FontIcon Glyph="&#xE710;" FontSize="14" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
