@@ -165,8 +165,23 @@ public sealed partial class MainWindow : Window
                 .Where(n => n.Name.Contains(keyword, StringComparison.CurrentCultureIgnoreCase))
                 .ToList();
 
+        var visibleCount = notebooks.Count();
         NotebookListView.ItemsSource = null;
         NotebookListView.ItemsSource = notebooks;
+
+        NotebookCountText.Text = $"{_viewModel.Notebooks.Count} 本笔记";
+        NotebookEmptyState.Visibility = visibleCount == 0
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+
+        if (visibleCount == 0)
+        {
+            var isSearchMode = !string.IsNullOrWhiteSpace(keyword);
+            NotebookEmptyTitleText.Text = isSearchMode ? "没有匹配的笔记" : "还没有笔记";
+            NotebookEmptyDescriptionText.Text = isSearchMode
+                ? "试试其他关键词"
+                : "点击上方按钮创建第一本笔记";
+        }
     }
 
     private void SelectCurrentNotebook()
