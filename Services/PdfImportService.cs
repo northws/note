@@ -27,7 +27,7 @@ public class PdfImportService
     {
         try
         {
-            var file = await PickOpenFileAsync();
+            var file = await PickPdfFileAsync();
             if (file == null) return (false, null, null, false);
 
             return await ImportPdfFromStorageFileAsync(file, viewModel, password);
@@ -46,14 +46,24 @@ public class PdfImportService
             PdfDocument pdfDoc;
             try
             {
-                pdfDoc = await PdfDocument.LoadFromFileAsync(file);
+                if (!string.IsNullOrWhiteSpace(password))
+                {
+                    pdfDoc = await PdfDocument.LoadFromFileAsync(file, password);
+                }
+                else
+                {
+                    pdfDoc = await PdfDocument.LoadFromFileAsync(file);
+                }
             }
             catch (Exception ex)
             {
                 if (ex.Message.Contains("password", StringComparison.OrdinalIgnoreCase) ||
                     ex.Message.Contains("encrypted", StringComparison.OrdinalIgnoreCase))
                 {
-                    return (false, "PDF需要密码才能打开", null, true);
+                    var error = string.IsNullOrWhiteSpace(password)
+                        ? "PDF需要密码才能打开"
+                        : "密码错误或PDF无法解密";
+                    return (false, error, null, true);
                 }
                 throw;
             }
@@ -133,7 +143,7 @@ public class PdfImportService
         return localPath;
     }
 
-    private static async Task<StorageFile?> PickOpenFileAsync()
+    public static async Task<StorageFile?> PickPdfFileAsync()
     {
         var openPicker = new FileOpenPicker
         {

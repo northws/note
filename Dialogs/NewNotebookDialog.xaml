@@ -35,5 +35,16 @@
             <x:String>横线</x:String>
             <x:String>点阵</x:String>
         </ComboBox>
+
+        <ComboBox
+            x:Name="TemplateComboBox"
+            Header="模板"
+            HorizontalAlignment="Stretch"
+            SelectedIndex="0">
+            <x:String>自定义（无模板）</x:String>
+            <x:String>康奈尔笔记</x:String>
+            <x:String>会议记录</x:String>
+            <x:String>四象限待办</x:String>
+        </ComboBox>
     </StackPanel>
 </ContentDialog>

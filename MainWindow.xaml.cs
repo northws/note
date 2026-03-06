@@ -82,6 +82,17 @@ public sealed partial class MainWindow : Window
         var result = await dialog.ShowAsync();
         if (result == ContentDialogResult.Primary)
         {
+            var firstPage = new NotePage
+            {
+                PageIndex = 0,
+                Width = dialog.PageWidth,
+                Height = dialog.PageHeight,
+                Strokes = NotebookTemplateService.BuildTemplateStrokes(
+                    dialog.TemplateType,
+                    dialog.PageWidth,
+                    dialog.PageHeight)
+            };
+
             var notebook = new Notebook
             {
                 Name = dialog.NotebookName,
@@ -89,12 +100,7 @@ public sealed partial class MainWindow : Window
                 PageHeight = dialog.PageHeight,
                 BackgroundType = dialog.BackgroundType,
                 BackgroundColor = dialog.BackgroundColor,
-                Pages = [new NotePage 
-                { 
-                    PageIndex = 0,
-                    Width = dialog.PageWidth,
-                    Height = dialog.PageHeight
-                }]
+                Pages = [firstPage]
             };
 
             _viewModel.Notebooks.Insert(0, notebook);
@@ -298,7 +304,13 @@ private void ToolBar_ClearRequested(object? sender, EventArgs e)
     private async void ToolBar_ImportPdfRequested(object? sender, EventArgs e)
     {
         var service = new PdfImportService();
-        var (success, error, notebook, needPassword) = await service.ImportPdfAsync(_viewModel);
+        var file = await PdfImportService.PickPdfFileAsync();
+        if (file == null)
+        {
+            return;
+        }
+
+        var (success, error, notebook, needPassword) = await service.ImportPdfFromStorageFileAsync(file, _viewModel);
 
         if (success && notebook != null)
         {
@@ -325,7 +337,7 @@ private void ToolBar_ClearRequested(object? sender, EventArgs e)
             if (await dialog.ShowAsync() == ContentDialogResult.Primary)
             {
                 var password = passwordBox.Password;
-                (success, error, notebook, _) = await service.ImportPdfAsync(_viewModel, password);
+                (success, error, notebook, _) = await service.ImportPdfFromStorageFileAsync(file, _viewModel, password);
 
                 if (success && notebook != null)
                 {

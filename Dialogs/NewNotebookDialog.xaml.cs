@@ -10,6 +10,7 @@ public sealed partial class NewNotebookDialog : ContentDialog
     public double PageHeight { get; private set; } = 1123;
     public string BackgroundType { get; private set; } = "grid";
     public string BackgroundColor { get; private set; } = "#FFFFFF";
+    public string TemplateType { get; private set; } = "none";
 
     public NewNotebookDialog()
     {
@@ -37,6 +38,14 @@ public sealed partial class NewNotebookDialog : ContentDialog
             2 => "lined",
             3 => "dotted",
             _ => "grid"
+        };
+
+        TemplateType = TemplateComboBox.SelectedIndex switch
+        {
+            1 => "cornell",
+            2 => "meeting",
+            3 => "quadrant",
+            _ => "none"
         };
     }
 }
