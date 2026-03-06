@@ -100,7 +100,7 @@ public sealed partial class MainWindow : Window
                 PageHeight = dialog.PageHeight,
                 BackgroundType = dialog.BackgroundType,
                 BackgroundColor = dialog.BackgroundColor,
-                Pages = [firstPage]
+                Pages = new List<NotePage> { firstPage }
             };
 
             _viewModel.Notebooks.Insert(0, notebook);
@@ -160,7 +160,7 @@ public sealed partial class MainWindow : Window
     {
         var keyword = _notebookSearchKeyword.Trim();
         var notebooks = string.IsNullOrWhiteSpace(keyword)
-            ? _viewModel.Notebooks
+            ? _viewModel.Notebooks.ToList()
             : _viewModel.Notebooks
                 .Where(n => n.Name.Contains(keyword, StringComparison.CurrentCultureIgnoreCase))
                 .ToList();
@@ -475,3 +475,5 @@ private void ToolBar_ClearRequested(object? sender, EventArgs e)
 
     #endregion
 }
+
+

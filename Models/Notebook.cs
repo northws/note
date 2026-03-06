@@ -6,7 +6,7 @@ public class Notebook
     public string Name { get; set; } = "未命名笔记";
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime ModifiedAt { get; set; } = DateTime.Now;
-    public List<NotePage> Pages { get; set; } = [new NotePage { PageIndex = 0 }];
+    public List<NotePage> Pages { get; set; } = new List<NotePage> { new NotePage { PageIndex = 0 } };
     public int CurrentPageIndex { get; set; }
     public bool IsPdfNotebook { get; set; }
     public string? PdfFilePath { get; set; }
@@ -15,3 +15,4 @@ public class Notebook
     public string BackgroundColor { get; set; } = "#FFFFFF";
     public string BackgroundType { get; set; } = "grid"; // grid, blank, lined, dotted
 }
+

@@ -7,31 +7,14 @@
     xmlns:models="using:HandwrittenNotes.Models"
     Title="手写笔记">
 
-    <Window.Resources>
-        <LinearGradientBrush x:Key="MainBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#F7F8FC" Offset="0" />
-            <GradientStop Color="#EEF2FF" Offset="1" />
-        </LinearGradientBrush>
-        <LinearGradientBrush x:Key="SidebarGradientBrush" StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Color="#1E1E2E" Offset="0" />
-            <GradientStop Color="#181825" Offset="1" />
-        </LinearGradientBrush>
-        <SolidColorBrush x:Key="SidebarSubtleTextBrush" Color="#99CDD6F4" />
-        <SolidColorBrush x:Key="SidebarCardBrush" Color="#22CDD6F4" />
-        <SolidColorBrush x:Key="SidebarCardBorderBrush" Color="#3ACDD6F4" />
-        <SolidColorBrush x:Key="NotebookItemBrush" Color="#1E32384D" />
-        <SolidColorBrush x:Key="NotebookItemBorderBrush" Color="#364A4F6E" />
-        <SolidColorBrush x:Key="MainPanelBorderBrush" Color="#D9DEE8" />
-    </Window.Resources>
-
-    <Grid Background="{StaticResource MainBackgroundBrush}">
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="280" />
             <ColumnDefinition Width="1" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0" Background="{StaticResource SidebarGradientBrush}">
+        <Grid Grid.Column="0" Background="#1E1E2E">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -39,127 +22,54 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" Padding="18,24,18,14" Spacing="8">
+            <StackPanel Grid.Row="0" Margin="12" Spacing="8">
+                <TextBlock Text="手写笔记" FontSize="20" Foreground="#CDD6F4" />
                 <TextBlock
-                    Text="📝 手写笔记"
-                    FontSize="24"
-                    FontWeight="SemiBold"
-                    Foreground="{StaticResource SidebarForegroundBrush}" />
-                <TextBlock
-                    Text="为手写与 PDF 标注设计的工作台"
-                    FontSize="12"
-                    Foreground="{StaticResource SidebarSubtleTextBrush}" />
-                <Border
-                    Background="{StaticResource SidebarCardBrush}"
-                    BorderBrush="{StaticResource SidebarCardBorderBrush}"
-                    BorderThickness="1"
-                    CornerRadius="999"
-                    Padding="10,4"
-                    HorizontalAlignment="Left">
-                    <TextBlock
-                        x:Name="NotebookCountText"
-                        Text="0 本笔记"
-                        Foreground="{StaticResource SidebarForegroundBrush}"
-                        FontSize="12" />
-                </Border>
+                    x:Name="NotebookCountText"
+                    Text="0 本笔记"
+                    Foreground="#CDD6F4"
+                    FontSize="12" />
             </StackPanel>
 
             <Button
                 Grid.Row="1"
                 x:Name="NewNotebookButton"
                 Click="NewNotebookButton_Click"
-                HorizontalAlignment="Stretch"
-                Margin="12,0,12,12"
-                Padding="12,10"
-                CornerRadius="10"
-                Background="{StaticResource AppAccentBrush}">
-                <StackPanel Orientation="Horizontal" Spacing="8">
-                    <FontIcon Glyph="&#xE710;" FontSize="14" Foreground="White" />
-                    <TextBlock Text="新建笔记" Foreground="White" FontWeight="SemiBold" />
-                </StackPanel>
-            </Button>
+                Content="新建笔记"
+                Margin="12,0,12,8" />
 
-            <Border
+            <TextBox
                 Grid.Row="2"
-                Margin="12,0,12,10"
-                Padding="10,0"
-                CornerRadius="10"
-                Background="{StaticResource SidebarCardBrush}"
-                BorderBrush="{StaticResource SidebarCardBorderBrush}"
-                BorderThickness="1">
-                <Grid ColumnSpacing="8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <FontIcon
-                        Glyph="&#xE721;"
-                        VerticalAlignment="Center"
-                        Foreground="{StaticResource SidebarSubtleTextBrush}" />
-                    <TextBox
-                        Grid.Column="1"
-                        x:Name="NotebookSearchBox"
-                        TextChanged="NotebookSearchBox_TextChanged"
-                        PlaceholderText="搜索笔记名称..."
-                        BorderThickness="0"
-                        Background="Transparent"
-                        Foreground="{StaticResource SidebarForegroundBrush}" />
-                </Grid>
-            </Border>
+                x:Name="NotebookSearchBox"
+                TextChanged="NotebookSearchBox_TextChanged"
+                PlaceholderText="搜索笔记名称..."
+                Margin="12,0,12,8" />
 
             <Grid Grid.Row="3" Margin="8,0,8,8">
                 <ListView
                     x:Name="NotebookListView"
                     SelectionChanged="NotebookListView_SelectionChanged"
                     Background="Transparent"
-                    BorderThickness="0"
-                    Padding="0,0,0,8">
-                    <ListView.ItemContainerTransitions>
-                        <TransitionCollection>
-                            <EntranceThemeTransition IsStaggeringEnabled="True" />
-                        </TransitionCollection>
-                    </ListView.ItemContainerTransitions>
+                    BorderThickness="0">
                     <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="models:Notebook">
-                            <Border
-                                Margin="2,0,2,8"
-                                Padding="10,12"
-                                Background="{StaticResource NotebookItemBrush}"
-                                BorderBrush="{StaticResource NotebookItemBorderBrush}"
-                                BorderThickness="1"
-                                CornerRadius="10">
-                                <Grid ColumnSpacing="10">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel Grid.Column="0" Spacing="2">
-                                        <TextBlock
-                                            Text="{Binding Name}"
-                                            FontSize="14"
-                                            FontWeight="SemiBold"
-                                            Foreground="{StaticResource SidebarForegroundBrush}"
-                                            TextTrimming="CharacterEllipsis" />
-                                        <TextBlock
-                                            Text="{Binding ModifiedAt}"
-                                            FontSize="11"
-                                            Foreground="{StaticResource SidebarSubtleTextBrush}" />
-                                    </StackPanel>
-                                    <Button
-                                        Grid.Column="1"
-                                        Tag="{Binding Id}"
-                                        Click="DeleteNotebook_Click"
-                                        ToolTipService.ToolTip="删除"
-                                        Width="30"
-                                        Height="30"
-                                        Padding="0"
-                                        Background="#22F38BA8"
-                                        CornerRadius="15"
-                                        VerticalAlignment="Center">
-                                        <FontIcon Glyph="&#xE74D;" FontSize="12" Foreground="#F38BA8" />
-                                    </Button>
-                                </Grid>
-                            </Border>
+                        <DataTemplate>
+                            <Grid Margin="0,0,0,6" ColumnSpacing="8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    Text="{Binding Name}"
+                                    Foreground="#CDD6F4"
+                                    VerticalAlignment="Center"
+                                    TextTrimming="CharacterEllipsis" />
+                                <Button
+                                    Grid.Column="1"
+                                    Tag="{Binding Id}"
+                                    Click="DeleteNotebook_Click"
+                                    Content="删"
+                                    Padding="8,2" />
+                            </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -169,18 +79,17 @@
                     Visibility="Collapsed"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Spacing="6"
+                    Spacing="4"
                     IsHitTestVisible="False">
-                    <FontIcon Glyph="&#xE8BD;" FontSize="26" Foreground="{StaticResource SidebarSubtleTextBrush}" />
                     <TextBlock
                         x:Name="NotebookEmptyTitleText"
                         Text="还没有笔记"
-                        Foreground="{StaticResource SidebarForegroundBrush}"
+                        Foreground="#CDD6F4"
                         FontWeight="SemiBold" />
                     <TextBlock
                         x:Name="NotebookEmptyDescriptionText"
                         Text="点击上方按钮创建第一本笔记"
-                        Foreground="{StaticResource SidebarSubtleTextBrush}"
+                        Foreground="#99CDD6F4"
                         FontSize="12" />
                 </StackPanel>
             </Grid>
@@ -195,133 +104,65 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Border
+            <controls:InkToolbar
                 Grid.Row="0"
-                Margin="12,12,12,8"
-                CornerRadius="12"
-                BorderBrush="#2C4A4F6E"
-                BorderThickness="1"
-                Background="{StaticResource ToolbarBackgroundBrush}">
-                <controls:InkToolbar
-                    x:Name="ToolBar"
-                    ToolChanged="ToolBar_ToolChanged"
-                    ColorChanged="ToolBar_ColorChanged"
-                    StrokeWidthChanged="ToolBar_StrokeWidthChanged"
-                    UndoRequested="ToolBar_UndoRequested"
-                    RedoRequested="ToolBar_RedoRequested"
-                    ClearRequested="ToolBar_ClearRequested"
-                    ExportPdfRequested="ToolBar_ExportPdfRequested"
-                    ImportPdfRequested="ToolBar_ImportPdfRequested"
-                    InsertImageRequested="ToolBar_InsertImageRequested"
-                    ZoomInRequested="ToolBar_ZoomInRequested"
-                    ZoomOutRequested="ToolBar_ZoomOutRequested"
-                    ZoomResetRequested="ToolBar_ZoomResetRequested" />
-            </Border>
+                x:Name="ToolBar"
+                ToolChanged="ToolBar_ToolChanged"
+                ColorChanged="ToolBar_ColorChanged"
+                StrokeWidthChanged="ToolBar_StrokeWidthChanged"
+                UndoRequested="ToolBar_UndoRequested"
+                RedoRequested="ToolBar_RedoRequested"
+                ClearRequested="ToolBar_ClearRequested"
+                ExportPdfRequested="ToolBar_ExportPdfRequested"
+                ImportPdfRequested="ToolBar_ImportPdfRequested"
+                InsertImageRequested="ToolBar_InsertImageRequested"
+                ZoomInRequested="ToolBar_ZoomInRequested"
+                ZoomOutRequested="ToolBar_ZoomOutRequested"
+                ZoomResetRequested="ToolBar_ZoomResetRequested"
+                Margin="12,12,12,8" />
 
             <Grid Grid.Row="1" Margin="12,0,12,12">
-                <Border
-                    CornerRadius="14"
-                    Background="#FAFFFFFF"
-                    BorderBrush="{StaticResource MainPanelBorderBrush}"
-                    BorderThickness="1" />
-
                 <controls:InkCanvas
                     x:Name="DrawingCanvas"
-                    Margin="8"
                     StrokesChanged="DrawingCanvas_StrokesChanged" />
 
                 <Border
                     x:Name="WelcomePanel"
-                    Visibility="Visible"
-                    CornerRadius="14"
-                    Background="{StaticResource MainBackgroundBrush}">
-                    <Border.Transitions>
-                        <TransitionCollection>
-                            <EntranceThemeTransition />
-                        </TransitionCollection>
-                    </Border.Transitions>
-                    <StackPanel
-                        VerticalAlignment="Center"
+                    Background="#F7F8FC"
+                    Visibility="Visible">
+                    <TextBlock
+                        Text="欢迎使用手写笔记"
                         HorizontalAlignment="Center"
-                        Spacing="14">
-                        <Border
-                            Width="96"
-                            Height="96"
-                            CornerRadius="48"
-                            Background="#1E6C63FF"
-                            BorderBrush="#556C63FF"
-                            BorderThickness="1">
-                            <FontIcon
-                                Glyph="&#xEE56;"
-                                FontSize="44"
-                                Foreground="{StaticResource AppAccentBrush}"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center" />
-                        </Border>
-                        <TextBlock
-                            Text="欢迎使用手写笔记"
-                            FontSize="30"
-                            FontWeight="SemiBold"
-                            HorizontalAlignment="Center"
-                            Foreground="#1E1E2E" />
-                        <TextBlock
-                            Text="左侧创建笔记，右侧开始手写或导入 PDF"
-                            FontSize="15"
-                            HorizontalAlignment="Center"
-                            Foreground="#6C7086" />
-                    </StackPanel>
+                        VerticalAlignment="Center"
+                        FontSize="24" />
                 </Border>
             </Grid>
 
-            <Border
+            <StackPanel
                 Grid.Row="2"
                 x:Name="PageNavBar"
+                Orientation="Horizontal"
+                HorizontalAlignment="Center"
+                Spacing="8"
                 Margin="12,0,12,12"
-                Padding="16,8"
-                CornerRadius="12"
-                Background="{StaticResource ToolbarBackgroundBrush}"
-                BorderBrush="#2C4A4F6E"
-                BorderThickness="1"
                 Visibility="Collapsed">
-                <StackPanel
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Center"
-                    Spacing="12">
-                    <Button
-                        x:Name="PrevPageButton"
-                        Click="PrevPageButton_Click"
-                        ToolTipService.ToolTip="上一页"
-                        Width="38"
-                        Height="38"
-                        Padding="0">
-                        <FontIcon Glyph="&#xE76B;" FontSize="14" />
-                    </Button>
-                    <TextBlock
-                        x:Name="PageInfoText"
-                        Text="第 1 / 1 页"
-                        VerticalAlignment="Center"
-                        Foreground="{StaticResource SidebarForegroundBrush}"
-                        FontSize="13" />
-                    <Button
-                        x:Name="NextPageButton"
-                        Click="NextPageButton_Click"
-                        ToolTipService.ToolTip="下一页"
-                        Width="38"
-                        Height="38"
-                        Padding="0">
-                        <FontIcon Glyph="&#xE76C;" FontSize="14" />
-                    </Button>
-                    <Button
-                        x:Name="AddPageButton"
-                        Click="AddPageButton_Click"
-                        ToolTipService.ToolTip="添加页面"
-                        Width="38"
-                        Height="38"
-                        Padding="0">
-                        <FontIcon Glyph="&#xE710;" FontSize="14" />
-                    </Button>
-                </StackPanel>
-            </Border>
+                <Button
+                    x:Name="PrevPageButton"
+                    Click="PrevPageButton_Click"
+                    Content="上一页" />
+                <TextBlock
+                    x:Name="PageInfoText"
+                    Text="第 1 / 1 页"
+                    VerticalAlignment="Center" />
+                <Button
+                    x:Name="NextPageButton"
+                    Click="NextPageButton_Click"
+                    Content="下一页" />
+                <Button
+                    x:Name="AddPageButton"
+                    Click="AddPageButton_Click"
+                    Content="添加页面" />
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>

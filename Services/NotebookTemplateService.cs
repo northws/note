@@ -14,7 +14,7 @@ public static class NotebookTemplateService
             "cornell" => BuildCornellTemplate(width, height),
             "meeting" => BuildMeetingTemplate(width, height),
             "quadrant" => BuildQuadrantTemplate(width, height),
-            _ => []
+            _ => new List<InkStroke>()
         };
     }
 
@@ -90,11 +90,13 @@ public static class NotebookTemplateService
             ColorR = 168,
             ColorG = 176,
             ColorB = 190,
-            Points =
-            [
+            Points = new List<InkPoint>
+            {
                 new InkPoint(x1, y1, 0.5f),
                 new InkPoint(x2, y2, 0.5f)
-            ]
+            }
         };
     }
 }
+
+

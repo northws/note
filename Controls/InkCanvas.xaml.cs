@@ -14,7 +14,7 @@ namespace HandwrittenNotes.Controls;
 
 public sealed partial class InkCanvas : UserControl
 {
-    private List<InkStroke> _strokes = [];
+    private List<InkStroke> _strokes = new List<InkStroke>();
     private InkStroke? _currentStroke;
     private readonly Stack<List<InkStroke>> _undoStack = new();
     private readonly Stack<List<InkStroke>> _redoStack = new();

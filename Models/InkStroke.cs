@@ -37,7 +37,7 @@ public enum InkToolType
 /// </summary>
 public class InkStroke
 {
-    public List<InkPoint> Points { get; set; } = [];
+    public List<InkPoint> Points { get; set; } = new List<InkPoint>();
     public byte ColorR { get; set; } = 0;
     public byte ColorG { get; set; } = 0;
     public byte ColorB { get; set; } = 0;
@@ -67,3 +67,4 @@ public class InkStroke
         ToolType = toolType;
     }
 }
+

@@ -71,7 +71,7 @@ public class PdfImportService
             var notebook = new Notebook
             {
                 Name = $"PDF: {file.DisplayName}",
-                Pages = [],
+                Pages = new List<NotePage>(),
                 IsPdfNotebook = true
             };
 
@@ -159,3 +159,4 @@ public class PdfImportService
         return await openPicker.PickSingleFileAsync();
     }
 }
+

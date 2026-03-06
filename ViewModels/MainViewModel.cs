@@ -11,7 +11,7 @@ public partial class MainViewModel : ObservableObject
     private readonly NotebookStorageService _storageService = new();
 
     [ObservableProperty]
-    private ObservableCollection<Notebook> _notebooks = [];
+    private ObservableCollection<Notebook> _notebooks = new ObservableCollection<Notebook>();
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CurrentPage))]
@@ -135,3 +135,4 @@ public partial class MainViewModel : ObservableObject
         }
     }
 }
+
