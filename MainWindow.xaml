@@ -21,6 +21,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -55,9 +56,18 @@
                 </StackPanel>
             </Button>
 
+            <!-- 笔记搜索 -->
+            <TextBox
+                Grid.Row="2"
+                x:Name="NotebookSearchBox"
+                TextChanged="NotebookSearchBox_TextChanged"
+                Margin="12,0,12,8"
+                PlaceholderText="搜索笔记名称..."
+                HorizontalAlignment="Stretch" />
+
             <!-- 笔记本列表 -->
             <ListView
-                Grid.Row="2"
+                Grid.Row="3"
                 x:Name="NotebookListView"
                 SelectionChanged="NotebookListView_SelectionChanged"
                 Padding="8,0">
@@ -124,6 +134,7 @@
                 ClearRequested="ToolBar_ClearRequested"
                 ExportPdfRequested="ToolBar_ExportPdfRequested"
                 ImportPdfRequested="ToolBar_ImportPdfRequested"
+                InsertImageRequested="ToolBar_InsertImageRequested"
                 ZoomInRequested="ToolBar_ZoomInRequested"
                 ZoomOutRequested="ToolBar_ZoomOutRequested"
                 ZoomResetRequested="ToolBar_ZoomResetRequested" />

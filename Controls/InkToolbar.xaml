@@ -151,6 +151,16 @@
                 <FontIcon Glyph="&#xE8A5;" FontSize="16" />
             </Button>
 
+            <!-- 插入图片 -->
+            <Button
+                x:Name="InsertImageButton"
+                Click="InsertImageButton_Click"
+                ToolTipService.ToolTip="插入图片"
+                Width="40" Height="40"
+                Padding="0">
+                <FontIcon Glyph="&#xE91B;" FontSize="16" />
+            </Button>
+
             <AppBarSeparator />
 
             <!-- 缩放 -->

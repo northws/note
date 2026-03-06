@@ -14,6 +14,7 @@ public sealed partial class MainWindow : Window
 {
     private readonly MainViewModel _viewModel = new();
     private System.Threading.Timer? _autoSaveTimer;
+    private string _notebookSearchKeyword = string.Empty;
 
     public MainWindow()
     {
@@ -151,15 +152,29 @@ public sealed partial class MainWindow : Window
 
     private void RefreshNotebookList()
     {
+        var keyword = _notebookSearchKeyword.Trim();
+        var notebooks = string.IsNullOrWhiteSpace(keyword)
+            ? _viewModel.Notebooks
+            : _viewModel.Notebooks
+                .Where(n => n.Name.Contains(keyword, StringComparison.CurrentCultureIgnoreCase))
+                .ToList();
+
         NotebookListView.ItemsSource = null;
-        NotebookListView.ItemsSource = _viewModel.Notebooks;
+        NotebookListView.ItemsSource = notebooks;
     }
 
     private void SelectCurrentNotebook()
     {
+        RefreshNotebookList();
         NotebookListView.SelectedItem = _viewModel.CurrentNotebook;
         LoadCurrentPage();
         ShowCanvasPanel();
+    }
+
+    private void NotebookSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        _notebookSearchKeyword = NotebookSearchBox.Text ?? string.Empty;
+        RefreshNotebookList();
     }
 
     #endregion
@@ -341,6 +356,25 @@ private void ToolBar_ClearRequested(object? sender, EventArgs e)
             };
             await dialog.ShowAsync();
         }
+    }
+
+    private async void ToolBar_InsertImageRequested(object? sender, EventArgs e)
+    {
+        if (_viewModel.CurrentPage == null) return;
+
+        var service = new ImageImportService();
+        var (imagePath, width, height) = await service.PickAndImportImageAsync();
+        if (string.IsNullOrEmpty(imagePath)) return;
+
+        _viewModel.CurrentPage.BackgroundImagePath = imagePath;
+        if (width > 0 && height > 0)
+        {
+            _viewModel.CurrentPage.Width = width;
+            _viewModel.CurrentPage.Height = height;
+        }
+
+        await LoadCurrentPage();
+        await _viewModel.SaveCurrentNotebookAsync();
     }
 
     private void ToolBar_ZoomInRequested(object? sender, EventArgs e)

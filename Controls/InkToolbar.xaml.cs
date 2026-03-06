@@ -12,11 +12,12 @@ public sealed partial class InkToolbar : UserControl
     public event EventHandler<InkToolType>? ToolChanged;
     public event EventHandler<Color>? ColorChanged;
     public event EventHandler<float>? StrokeWidthChanged;
-public event EventHandler? UndoRequested;
+    public event EventHandler? UndoRequested;
     public event EventHandler? RedoRequested;
     public event EventHandler? ClearRequested;
     public event EventHandler? ExportPdfRequested;
     public event EventHandler? ImportPdfRequested;
+    public event EventHandler? InsertImageRequested;
     public event EventHandler? ZoomInRequested;
     public event EventHandler? ZoomOutRequested;
     public event EventHandler? ZoomResetRequested;
@@ -124,6 +125,11 @@ private void ClearButton_Click(object sender, RoutedEventArgs e)
     private void ImportPdfButton_Click(object sender, RoutedEventArgs e)
     {
         ImportPdfRequested?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void InsertImageButton_Click(object sender, RoutedEventArgs e)
+    {
+        InsertImageRequested?.Invoke(this, EventArgs.Empty);
     }
 
     private void ZoomInButton_Click(object sender, RoutedEventArgs e)
